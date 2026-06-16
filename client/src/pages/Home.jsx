@@ -232,7 +232,7 @@ const Home = () => {
                     </div>
                 ) : notes.length === 0 ? (
                     <div className="text-center py-10 text-gray-500">
-                        Notes levu — Add Note click cheyyi! 📝
+                        Notes are not exit — Add Note! 📝
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 
