@@ -1,4 +1,4 @@
-const Note = require('../models/Note');
+import Note from '../models/Note.js';
 
 // @desc    Get all notes
 // @route   GET /api/notes
