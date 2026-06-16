@@ -1,6 +1,6 @@
 import User from '../models/User.js';
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 // Token generate 
 const generateToken = (id) => {
