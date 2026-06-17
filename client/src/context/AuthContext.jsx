@@ -12,8 +12,6 @@ export const AuthProvider = ({ children }) => {
     const register = async (userData) => {
         try {
             const { data } = await registerUser(userData);
-            localStorage.setItem('user', JSON.stringify(data));
-            setUser(data);
             return { success: true };
         } catch (error) {
             return { 
