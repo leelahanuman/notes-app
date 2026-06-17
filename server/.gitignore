@@ -1,7 +1,3 @@
-# Server
-server/node_modules
-server/.env
-
-# Client
-client/node_modules
-client/dist
+node_modules
+.env
+dist
