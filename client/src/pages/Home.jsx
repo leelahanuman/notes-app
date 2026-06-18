@@ -6,6 +6,7 @@ import { getNotes, createNote, updateNote,
 import NoteCard from '../components/NoteCard';
 
 const Home = () => {
+    const [searchTerm, setSearchTerm] = useState('');
     const [notes, setNotes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -101,6 +102,11 @@ const Home = () => {
         navigate('/login');
     };
 
+    const filteredNotes = notes.filter((note) =>
+    note.title.toLowerCase().includes(searchTerm.toLowerCase())
+   );
+
+
     return (
         <div className="min-h-screen bg-gray-100">
             {/* Navbar */}
@@ -124,7 +130,7 @@ const Home = () => {
             </nav>
 
             <div className="max-w-6xl mx-auto p-6">
-                {/* Add Note Button */}
+                {/* Add Note Button 
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-bold text-gray-800">
                         My Notes
@@ -144,8 +150,39 @@ const Home = () => {
                     >
                         + Add Note
                     </button>
-                </div>
+                </div>*/}
+                <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+    <h2 className="text-2xl font-bold text-gray-800">
+        My Notes
+    </h2>
 
+    <div className="flex gap-3 w-full md:w-auto">
+        <input
+            type="text"
+            placeholder="🔍 Search notes by title..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="border px-3 py-2 rounded-lg
+                focus:outline-none focus:border-blue-500"
+        />
+
+        <button
+            onClick={() => {
+                setShowForm(!showForm);
+                setEditNote(null);
+                setFormData({
+                    title: '',
+                    content: '',
+                    tags: ''
+                });
+            }}
+            className="bg-blue-500 text-white px-4 py-2
+                rounded-lg hover:bg-blue-600"
+        >
+            + Add Note
+        </button>
+    </div>
+</div>
                 {/* Error */}
                 {error && (
                     <div className="bg-red-100 text-red-600 
@@ -230,14 +267,15 @@ const Home = () => {
                     <div className="text-center py-10 text-gray-500">
                         Loading...
                     </div>
-                ) : notes.length === 0 ? (
+                ) : filteredNotes.length === 0 ? (
                     <div className="text-center py-10 text-gray-500">
                         Notes are not exit — Add Note! 📝
                     </div>
+                    
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 
                         lg:grid-cols-3 gap-4">
-                        {notes.map((note) => (
+                        {filteredNotes.map((note) => (
                             <NoteCard
                                 key={note._id}
                                 note={note}
