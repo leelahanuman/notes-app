@@ -8,6 +8,9 @@ import { useTheme } from '../context/ThemeContext';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import { FaStickyNote } from 'react-icons/fa';
 import { FaSearch } from 'react-icons/fa';
+import { FaPlus } from "react-icons/fa";
+import bgImage from "../assets/notebanner.jpg";
+
 
 const Home = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -145,7 +148,7 @@ const Home = () => {
                 </div>
             </nav>
 
-            <div className="max-w-6xl mx-auto p-6">
+            <div className="max-w-6xl mx-auto p-6" style={{ backgroundImage: `url(${bgImage})` }}>
                 {/* Add Note Button 
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-bold text-gray-800">
@@ -173,7 +176,7 @@ const Home = () => {
     </h2>
 
     <div className="flex gap-3 relative w-full md:w-auto">
-        <FaSearch className="absolute right-35 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <FaSearch className="absolute right-37 top-1/2 transform -translate-y-1/2 text-gray-400" />
         <input
             type="text"
             placeholder="Search notes by title..."
@@ -193,10 +196,10 @@ const Home = () => {
                     tags: ''
                 });
             }}
-            className="bg-blue-500 text-white px-4 py-2
+            className="bg-blue-500  flex items-center justify-center gap-2 text-white px-4 py-2
                 rounded-lg hover:bg-blue-600"
         >
-            + Add Note
+            <FaPlus />Add Note
         </button>
     </div>
 </div>
