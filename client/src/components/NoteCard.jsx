@@ -1,3 +1,5 @@
+import { FaEdit, FaTrash, FaThumbtack } from 'react-icons/fa';
+
 const NoteCard = ({ note, onEdit, onDelete, onPin }) => {
     return (
         <div className={`bg-white rounded-lg shadow-md p-5 
@@ -17,7 +19,7 @@ const NoteCard = ({ note, onEdit, onDelete, onPin }) => {
                         hover:text-yellow-400 transition`}
                     title={note.isPinned ? 'Unpin' : 'Pin'}
                 >
-                    📌
+                    <FaThumbtack className="cursor-pointer text-yellow-500" />
                 </button>
             </div>
 
@@ -59,7 +61,7 @@ const NoteCard = ({ note, onEdit, onDelete, onPin }) => {
                         py-1.5 rounded-lg hover:bg-blue-600 
                         text-sm font-medium transition"
                 >
-                    ✏️ Edit
+                     <FaEdit className="text-blue-500 hover:text-blue-700 text-lg" /> Edit
                 </button>
                 <button
                     onClick={() => onDelete(note._id)}
@@ -67,7 +69,7 @@ const NoteCard = ({ note, onEdit, onDelete, onPin }) => {
                         py-1.5 rounded-lg hover:bg-red-600 
                         text-sm font-medium transition"
                 >
-                    🗑️ Delete
+                    <FaTrash className="cursor-pointer text-red-500" /> Delete
                 </button>
             </div>
         </div>
