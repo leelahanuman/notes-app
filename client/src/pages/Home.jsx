@@ -4,6 +4,13 @@ import { useAuth } from '../context/AuthContext';
 import { getNotes, createNote, updateNote, 
          deleteNote, pinNote } from '../services/api';
 import NoteCard from '../components/NoteCard';
+import { useTheme } from '../context/ThemeContext';
+import { FaSun, FaMoon } from 'react-icons/fa';
+import { FaStickyNote } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
+import { FaPlus } from "react-icons/fa";
+import bgImage from "../assets/notebanner.jpg";
+
 
 const Home = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -17,7 +24,7 @@ const Home = () => {
         content: '',
         tags: ''
     });
-
+    const { theme, toggleTheme } = useTheme();
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
@@ -108,17 +115,29 @@ const Home = () => {
 
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 ">
             {/* Navbar */}
-            <nav className="bg-white shadow-md px-6 py-4 
+            <nav className="bg-white dark:bg-gray-900 shadow-md px-6 py-4 
                 flex justify-between items-center">
-                <h1 className="text-xl font-bold text-blue-600">
-                    📝 Notes App
+                <h1 className="text-xl flex items-center justify-center gap-2 font-bold text-blue-600 dark:bg-gray-900">
+                    <FaStickyNote className="text-yellow-500 text-xl" /> Notes App
                 </h1>
                 <div className="flex items-center gap-4">
-                    <span className="text-gray-600 text-sm">
+                    <span className="text-gray-600  dark:text-gray-300 text-sm">
                         Hi, {user?.name}!
                     </span>
+                    <button
+                        onClick={toggleTheme}
+                        className="text-xl px-2 py-1 rounded-lg
+                            hover:bg-gray-100 dark:hover:bg-gray-700"
+                        aria-label="Toggle theme"
+                    >
+                        {theme === 'dark' ? (
+                            <FaSun className="text-yellow-400 text-xl"/>
+                        ) : (
+                            <FaMoon className="text-gray-700 text-xl" />
+                        )}
+                    </button>
                     <button
                         onClick={handleLogout}
                         className="bg-red-500 text-white px-4 py-2 
@@ -129,7 +148,7 @@ const Home = () => {
                 </div>
             </nav>
 
-            <div className="max-w-6xl mx-auto p-6">
+            <div className="max-w-6xl mx-auto p-6" style={{ backgroundImage: `url(${bgImage})` }}>
                 {/* Add Note Button 
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-bold text-gray-800">
@@ -152,18 +171,19 @@ const Home = () => {
                     </button>
                 </div>*/}
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-    <h2 className="text-2xl font-bold text-gray-800">
+    <h2 className="text-2xl font-bold text-gray-800 dark:bg-gray-900">
         My Notes
     </h2>
 
-    <div className="flex gap-3 w-full md:w-auto">
+    <div className="flex gap-3 relative w-full md:w-auto">
+        <FaSearch className="absolute right-37 top-1/2 transform -translate-y-1/2 text-gray-400" />
         <input
             type="text"
-            placeholder="🔍 Search notes by title..."
+            placeholder="Search notes by title..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="border px-3 py-2 rounded-lg
-                focus:outline-none focus:border-blue-500"
+                focus:outline-none focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
 
         <button
@@ -176,10 +196,10 @@ const Home = () => {
                     tags: ''
                 });
             }}
-            className="bg-blue-500 text-white px-4 py-2
+            className="bg-blue-500  flex items-center justify-center gap-2 text-white px-4 py-2
                 rounded-lg hover:bg-blue-600"
         >
-            + Add Note
+            <FaPlus />Add Note
         </button>
     </div>
 </div>
@@ -268,8 +288,9 @@ const Home = () => {
                         Loading...
                     </div>
                 ) : filteredNotes.length === 0 ? (
-                    <div className="text-center py-10 text-gray-500">
-                        Notes are not exit — Add Note! 📝
+                   <div className="text-center py-10 text-gray-500 flex items-center justify-center gap-2">
+                        Notes are not exist — Add Note!
+                        <FaStickyNote className="text-yellow-500 text-xl" />
                     </div>
                     
                 ) : (
