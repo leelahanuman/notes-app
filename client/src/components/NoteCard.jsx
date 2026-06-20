@@ -45,19 +45,37 @@ const NoteCard = ({ note, onEdit, onDelete, onPin }) => {
             )}
 
             {/* Date */}
-            <p className="text-gray-400 text-xs">
-                {new Date(note.createdAt).toLocaleDateString('en-IN', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric'
-                })}
-            </p>
+{/* Date */}
+<div className="text-gray-400 text-xs space-y-0.5">
+    <p>
+        Created: {new Date(note.createdAt).toLocaleDateString('en-IN', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        })}
+    </p>
+
+    {/* Only show "updated" if it's actually different from created */}
+    {note.updatedAt && note.updatedAt !== note.createdAt && (
+        <p>
+            Edited: {new Date(note.updatedAt).toLocaleDateString('en-IN', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })}
+        </p>
+    )}
+</div>
 
             {/* Actions */}
             <div className="flex gap-2 mt-auto">
                 <button
                     onClick={() => onEdit(note)}
-                    className="flex-1 bg-blue-500 text-white 
+                    className="flex-1 flex items-center justify-center gap-2 bg-blue-500 text-white 
                         py-1.5 rounded-lg hover:bg-blue-600 
                         text-sm font-medium transition"
                 >
@@ -65,7 +83,7 @@ const NoteCard = ({ note, onEdit, onDelete, onPin }) => {
                 </button>
                 <button
                     onClick={() => onDelete(note._id)}
-                    className="flex-1 bg-red-500 text-white 
+                    className="flex-1 flex items-center justify-center gap-2 bg-red-500 text-white 
                         py-1.5 rounded-lg hover:bg-red-600 
                         text-sm font-medium transition"
                 >
