@@ -7,6 +7,9 @@ A full-stack notes application built with the MERN stack
 ##  Features
 - User Authentication (Register/Login with JWT)
 - Create, Read, Update, Delete Notes
+- Exports Notes as TXT and PDF
+- last updated text
+- Create, Read, Update, Delete Notes
 - Pin/Unpin important notes
 - Tag based organization
 - Responsive UI with Tailwind CSS
