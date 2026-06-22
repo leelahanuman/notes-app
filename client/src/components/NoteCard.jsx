@@ -1,79 +1,79 @@
-import { FaEdit, FaTrash, FaThumbtack } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaThumbtack } from "react-icons/fa";
 
 const NoteCard = ({ note, onEdit, onDelete, onPin }) => {
-    return (
-        <div className={`bg-white rounded-lg shadow-md p-5 
-            flex flex-col gap-3 border-l-4 
-            ${note.isPinned ? 'border-yellow-400' : 'border-blue-400'}`}>
-            
-            {/* Header */}
-            <div className="flex justify-between items-start">
-                <h3 className="text-lg font-bold text-gray-800 
-                    flex-1 pr-2">
-                    {note.title}
-                </h3>
-                <button
-                    onClick={() => onPin(note._id)}
-                    className={`text-xl ${note.isPinned ? 
-                        'text-yellow-400' : 'text-gray-300'} 
-                        hover:text-yellow-400 transition`}
-                    title={note.isPinned ? 'Unpin' : 'Pin'}
-                >
-                    <FaThumbtack className="cursor-pointer text-yellow-500" />
-                </button>
-            </div>
+  return (
+    <div
+      className={`
+    bg-white dark:bg-gray-800
+    rounded-2xl p-5 shadow-md
+    hover:shadow-xl hover:-translate-y-1
+    transition-all duration-300
+    border-l-4
+    ${note.isPinned ? "border-yellow-400" : "border-blue-500"}
+  `}
+    >
+      {/* Header */}
+      <div className="flex justify-between items-start mb-3">
+        <h3 className="text-lg font-bold text-gray-800 dark:text-white flex-1 pr-2">
+          {note.title}
+        </h3>
+        <button
+          onClick={() => onPin(note._id)}
+          className={`p-2 rounded-full transition-all ${
+            note.isPinned
+              ? "bg-yellow-100 text-yellow-500"
+              : "bg-gray-100 text-gray-400 hover:text-yellow-500"
+          }`}
+        >
+          <FaThumbtack />
+        </button>
+      </div>
 
-            {/* Content */}
-            <p className="text-gray-600 text-sm leading-relaxed
-                line-clamp-3">
-                {note.content}
-            </p>
+      {/* Content */}
+      <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-5">
+        {note.content}
+      </p>
 
-            {/* Tags */}
-            {note.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                    {note.tags.map((tag, index) => (
-                        <span
-                            key={index}
-                            className="bg-blue-100 text-blue-600 
-                                text-xs px-2 py-1 rounded-full"
-                        >
-                            #{tag}
-                        </span>
-                    ))}
-                </div>
-            )}
-
-            {/* Date */}
-            <p className="text-gray-400 text-xs">
-                {new Date(note.createdAt).toLocaleDateString('en-IN', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric'
-                })}
-            </p>
-
-            {/* Actions */}
-            <div className="flex gap-2 mt-auto">
-                <button
-                    onClick={() => onEdit(note)}
-                    className="flex-1 bg-blue-500 text-white 
-                        py-1.5 rounded-lg hover:bg-blue-600 
-                        text-sm font-medium transition"
-                >
-                     <FaEdit className="text-blue-500 hover:text-blue-700 text-lg" /> Edit
-                </button>
-                <button
-                    onClick={() => onDelete(note._id)}
-                    className="flex-1 bg-red-500 text-white 
-                        py-1.5 rounded-lg hover:bg-red-600 
-                        text-sm font-medium transition"
-                >
-                    <FaTrash className="cursor-pointer text-red-500" /> Delete
-                </button>
-            </div>
+      {/* Tags */}
+      {note.tags.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-3">
+          {note.tags.map((tag, index) => (
+            <span
+              key={index}
+              className="bg-blue-50 text-blue-600 border border-blue-200 text-xs px-3 py-1 rounded-full font-medium"
+            >
+              #{tag}
+            </span>
+          ))}
         </div>
-    );
+      )}
+
+      {/* Date */}
+      <p className="text-gray-400 text-xs mb-3">
+        {new Date(note.createdAt).toLocaleDateString("en-IN", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        })}
+      </p>
+
+      {/* Actions */}
+      <div className="flex justify-end gap-2">
+        <button
+          onClick={() => onEdit(note)}
+          className="p-3 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-500 hover:text-white transition-all"
+        >
+          <FaEdit />
+        </button>
+        <button
+          onClick={() => onDelete(note._id)}
+          className="p-3 rounded-full bg-red-100 text-red-600 hover:bg-red-500 hover:text-white transition-all"
+        >
+          <FaTrash />
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default NoteCard;
