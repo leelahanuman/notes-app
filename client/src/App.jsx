@@ -4,6 +4,7 @@ import { useAuth } from './context/AuthContext';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Archive from "./pages/Archive";
 
 // Protected Route
 const ProtectedRoute = ({ children }) => {
@@ -37,6 +38,7 @@ const AppRoutes = () => {
             } />
             {/* Unknown route →*/}
             <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/archive" element={<Archive />} />
         </Routes>
     );
 };

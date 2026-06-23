@@ -24,3 +24,8 @@ export const createNote = (data) => API.post('/notes', data);
 export const updateNote = (id, data) => API.put(`/notes/${id}`, data);
 export const deleteNote = (id) => API.delete(`/notes/${id}`);
 export const pinNote = (id) => API.put(`/notes/${id}/pin`);
+export const getArchivedNotes = () => API.get('/notes/archive');
+export const restoreNote = (id) =>
+  API.put(`/notes/${id}/restore`);
+export const permanentlyDeleteNote = (id) =>
+  API.delete(`/notes/${id}/permanent`);

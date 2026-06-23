@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import jsPDF from "jspdf";
+import { getArchivedNotes, restoreNote, permanentlyDeleteNote } from "../services/api";
 import {
   getNotes,
   createNote,
@@ -91,12 +92,12 @@ const Home = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure to delete?")) {
+    if (window.confirm("Are you sure to archive this note?")) {
       try {
         await deleteNote(id);
         fetchNotes();
       } catch (error) {
-        setError("Delete failed!");
+        setError("archive failed!");
       }
     }
   };
@@ -264,7 +265,13 @@ const Home = () => {
               <FaMoon className="text-gray-700 text-lg" />
             )}
           </button>
-
+          
+          <button
+  onClick={() => navigate('/archive')}
+  className="flex items-center gap-2 bg-orange-500 text-white px-5 py-2.5 rounded-xl font-medium shadow-md hover:shadow-xl hover:scale-105 transition-all"
+>
+  📦 Archive
+</button>
           {/* Logout */}
           <button
             onClick={handleLogout}
