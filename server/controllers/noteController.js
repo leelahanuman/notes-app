@@ -5,7 +5,7 @@ const Note = require('../models/note');
 // @access  Private
 const getNotes = async (req, res) => {
     try {
-        const notes = await Note.find({ user: req.user._id })
+        const notes = await Note.find({ user: req.user._id,isArchived: false })
             .sort({ isPinned: -1, createdAt: -1 });
         
         res.status(200).json({
@@ -97,17 +97,86 @@ const deleteNote = async (req, res) => {
     try {
         const note = await Note.findById(req.params.id);
 
-        // Note exists ?
         if (!note) {
-            return res.status(404).json({ 
-                message: 'Note not found' 
+            return res.status(404).json({
+                message: 'Note not found'
             });
         }
 
-        // note ? check 
         if (note.user.toString() !== req.user._id.toString()) {
-            return res.status(401).json({ 
-                message: 'Not authorized' 
+            return res.status(401).json({
+                message: 'Not authorized'
+            });
+        }
+
+        note.isArchived = true;
+        await note.save();
+
+        res.status(200).json({
+            success: true,
+            message: 'Note archived successfully',
+            data: note
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+//getArchivedNotes
+const getArchivedNotes = async (req, res) => {
+    try {
+        const notes = await Note.find({
+            user: req.user._id,
+            isArchived: true
+        }).sort({
+            createdAt: -1
+        });
+
+        res.status(200).json({
+            success: true,
+            count: notes.length,
+            data: notes
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+//Add restore Function
+const restoreNote = async (req, res) => {
+    try {
+        const note = await Note.findById(req.params.id);
+
+        if (!note) {
+            return res.status(404).json({
+                message: 'Note not found'
+            });
+        }
+
+        note.isArchived = false;
+        await note.save();
+
+        res.status(200).json({
+            success: true,
+            message: 'Note restored successfully',
+            data: note
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+//Permanent delet
+const permanentlyDeleteNote = async (req, res) => {
+    try {
+        const note = await Note.findById(req.params.id);
+
+        if (!note) {
+            return res.status(404).json({
+                message: 'Note not found'
             });
         }
 
@@ -115,13 +184,14 @@ const deleteNote = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: 'Note deleted successfully'
+            message: 'Note permanently deleted'
         });
 
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 // @desc    Pin/Unpin note
 // @route   PUT /api/notes/:id/pin
@@ -150,10 +220,13 @@ const pinNote = async (req, res) => {
     }
 };
 
-module.exports = { 
-    getNotes, 
-    createNote, 
-    updateNote, 
-    deleteNote,
-    pinNote
+module.exports = {
+  getNotes,
+  createNote,
+  updateNote,
+  deleteNote,
+  pinNote,
+  getArchivedNotes,
+  restoreNote,
+  permanentlyDeleteNote,
 };

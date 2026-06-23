@@ -1,4 +1,8 @@
-import { FaEdit, FaTrash, FaThumbtack } from "react-icons/fa";
+import {
+  FaEdit,
+  FaArchive,
+  FaThumbtack,
+} from "react-icons/fa";
 
 const NoteCard = ({ note, onEdit, onDelete, onPin }) => {
   return (
@@ -65,12 +69,13 @@ const NoteCard = ({ note, onEdit, onDelete, onPin }) => {
         >
           <FaEdit />
         </button>
-        <button
-          onClick={() => onDelete(note._id)}
-          className="p-3 rounded-full bg-red-100 text-red-600 hover:bg-red-500 hover:text-white transition-all"
-        >
-          <FaTrash />
-        </button>
+<button
+  onClick={() => onDelete(note._id)}
+  title="Archive Note"
+  className="p-3 rounded-full bg-orange-100 text-orange-600 hover:bg-orange-500 hover:text-white transition-all"
+>
+  <FaArchive />
+</button>
       </div>
     </div>
   );
