@@ -29,3 +29,4 @@ export const restoreNote = (id) =>
   API.put(`/notes/${id}/restore`);
 export const permanentlyDeleteNote = (id) =>
   API.delete(`/notes/${id}/permanent`);
+export const favoriteNote = (id) => API.put(`/notes/${id}/favorite`);
