@@ -1,10 +1,6 @@
-import {
-  FaEdit,
-  FaArchive,
-  FaThumbtack,
-} from "react-icons/fa";
+import { FaEdit, FaTrash, FaThumbtack, FaStar, FaArchive } from "react-icons/fa";
 
-const NoteCard = ({ note, onEdit, onDelete, onPin }) => {
+const NoteCard = ({ note, onEdit, onDelete, onPin,onFavorite }) => {
   return (
     <div
       className={`
@@ -21,16 +17,29 @@ const NoteCard = ({ note, onEdit, onDelete, onPin }) => {
         <h3 className="text-lg font-bold text-gray-800 dark:text-white flex-1 pr-2">
           {note.title}
         </h3>
-        <button
-          onClick={() => onPin(note._id)}
-          className={`p-2 rounded-full transition-all ${
-            note.isPinned
-              ? "bg-yellow-100 text-yellow-500"
-              : "bg-gray-100 text-gray-400 hover:text-yellow-500"
-          }`}
-        >
-          <FaThumbtack />
-        </button>
+<div className="flex gap-2">
+<button
+  onClick={() => onFavorite(note._id)}
+  className={`p-2 rounded-full transition-all ${
+    note.isFavorite
+      ? "bg-yellow-100 text-yellow-500"
+      : "bg-gray-100 text-gray-400 hover:text-yellow-500"
+  }`}
+>
+  <FaStar />
+</button>
+
+  <button
+    onClick={() => onPin(note._id)}
+    className={`p-2 rounded-full ${
+      note.isPinned
+        ? "bg-yellow-100 text-yellow-500"
+        : "bg-gray-100 text-gray-400 hover:text-yellow-500"
+    }`}
+  >
+    <FaThumbtack />
+  </button>
+</div>
       </div>
 
       {/* Content */}

@@ -2,13 +2,16 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import jsPDF from "jspdf";
-import { getArchivedNotes, restoreNote, permanentlyDeleteNote } from "../services/api";
 import {
   getNotes,
   createNote,
   updateNote,
   deleteNote,
   pinNote,
+  favoriteNote,
+  getArchivedNotes,
+  restoreNote,
+  permanentlyDeleteNote
 } from "../services/api";
 import NoteCard from "../components/NoteCard";
 import { useTheme } from "../context/ThemeContext";
@@ -110,6 +113,15 @@ const Home = () => {
       setError("Pin failed!");
     }
   };
+
+const handleFavorite = async (id) => {
+  try {
+    await favoriteNote(id);
+    fetchNotes(); // refresh notes
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   const handleLogout = () => {
     logout();
@@ -538,6 +550,7 @@ const Home = () => {
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onPin={handlePin}
+                onFavorite={handleFavorite}
               />
             ))}
           </div>
