@@ -9,6 +9,7 @@ import {
   deleteNote,
   pinNote,
   favoriteNote,
+  setReminder,
   getArchivedNotes,
   restoreNote,
   permanentlyDeleteNote
@@ -28,6 +29,7 @@ const Home = () => {
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editNote, setEditNote] = useState(null);
+  const [reminderDate, setReminderDate] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -45,7 +47,21 @@ const Home = () => {
     }
     fetchNotes();
   }, [user]);
+useEffect(() => {
+  const interval = setInterval(() => {
+    notes.forEach((note) => {
+      if (
+        note.reminderAt &&
+        !note.reminderShown &&
+        new Date(note.reminderAt) <= new Date()
+      ) {
+        alert(`Reminder: ${note.title}`);
+      }
+    });
+  }, 60000);
 
+  return () => clearInterval(interval);
+}, [notes]);
   const fetchNotes = async () => {
     try {
       setLoading(true);
@@ -63,6 +79,7 @@ const Home = () => {
     try {
       const noteData = {
         ...formData,
+        reminderAt: reminderDate,
         tags: formData.tags
           .split(",")
           .map((tag) => tag.trim())
@@ -113,6 +130,16 @@ const Home = () => {
       setError("Pin failed!");
     }
   };
+
+  const handleReminder = async (note) => {
+  const date = prompt("Enter reminder date/time");
+
+  if (!date) return;
+
+  await setReminder(note._id, date);
+
+  fetchNotes();
+};
 
 const handleFavorite = async (id) => {
   try {
@@ -504,6 +531,12 @@ const handleFavorite = async (id) => {
                                     rounded-lg mb-4 focus:outline-none 
                                     focus:border-blue-500"
               />
+              <input
+  type="datetime-local"
+  value={reminderDate}
+  onChange={(e) => setReminderDate(e.target.value)}
+  className="border p-2 rounded"
+/>
               <div className="flex gap-3">
                 <button
                   type="submit"
@@ -551,6 +584,7 @@ const handleFavorite = async (id) => {
                 onDelete={handleDelete}
                 onPin={handlePin}
                 onFavorite={handleFavorite}
+                onReminder={handleReminder}
               />
             ))}
           </div>

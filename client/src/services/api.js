@@ -30,3 +30,5 @@ export const restoreNote = (id) =>
 export const permanentlyDeleteNote = (id) =>
   API.delete(`/notes/${id}/permanent`);
 export const favoriteNote = (id) => API.put(`/notes/${id}/favorite`);
+export const setReminder = (id, reminderAt) =>
+  API.put(`/notes/${id}/reminder`, { reminderAt });
