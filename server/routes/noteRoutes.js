@@ -8,6 +8,7 @@ const {
   deleteNote,
   pinNote,
   favoriteNote,
+  setReminder,
   getArchivedNotes,
   restoreNote,
   permanentlyDeleteNote
@@ -24,4 +25,5 @@ router.put('/:id/pin', protect, pinNote);
 router.put('/:id/restore', protect, restoreNote);
 router.delete('/:id/permanent', protect, permanentlyDeleteNote);
 router.put('/:id/favorite', protect, favoriteNote);
+router.put("/:id/reminder", protect, setReminder);
 module.exports = router;

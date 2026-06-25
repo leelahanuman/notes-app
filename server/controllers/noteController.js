@@ -24,7 +24,7 @@ const getNotes = async (req, res) => {
 // @access  Private
 const createNote = async (req, res) => {
     try {
-        const { title, content, tags, isPinned } = req.body;
+        const { title, content, tags, isPinned, reminderAt  } = req.body;
 
         // Fields check 
         if (!title || !content) {
@@ -39,6 +39,7 @@ const createNote = async (req, res) => {
             content,
             tags: tags || [],
             isPinned: isPinned || false,
+            reminderAt,
             user: req.user._id
         });
 
@@ -224,6 +225,32 @@ const favoriteNote = async (req, res) => {
     }
 };
 
+
+const setReminder = async (req, res) => {
+  try {
+    const note = await Note.findById(req.params.id);
+
+    if (!note) {
+      return res.status(404).json({
+        message: "Note not found",
+      });
+    }
+
+    note.reminderAt = req.body.reminderAt;
+    note.reminderSent = false;
+
+    await note.save();
+
+    res.status(200).json({
+      success: true,
+      data: note,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 // @desc    Pin/Unpin note
 // @route   PUT /api/notes/:id/pin
 // @access  Private
@@ -261,4 +288,5 @@ module.exports = {
   getArchivedNotes,
   restoreNote,
   permanentlyDeleteNote,
+  setReminder,
 };

@@ -1,6 +1,7 @@
 import { FaEdit, FaTrash, FaThumbtack, FaStar, FaArchive } from "react-icons/fa";
+import { FaBell } from "react-icons/fa";
 
-const NoteCard = ({ note, onEdit, onDelete, onPin,onFavorite }) => {
+const NoteCard = ({ note, onEdit, onDelete, onPin,onFavorite,onReminder }) => {
   return (
     <div
       className={`
@@ -39,6 +40,12 @@ const NoteCard = ({ note, onEdit, onDelete, onPin,onFavorite }) => {
   >
     <FaThumbtack />
   </button>
+  <button
+  onClick={() => onReminder(note)}
+  className="p-2 rounded-full bg-blue-100 text-blue-500 hover:bg-blue-500 hover:text-white"
+>
+  <FaBell />
+</button>
 </div>
       </div>
 
