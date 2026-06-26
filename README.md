@@ -8,6 +8,8 @@ A full-stack notes application built with the MERN stack
 - User Authentication (Register/Login with JWT)
 - Create, Read, Update, Delete Notes
 - Archive Notes
+- Feature Notes
+- Remainder Notes
 - Exports Notes as TXT and PDF
 - last updated text
 - Create, Read, Update, Delete Notes
