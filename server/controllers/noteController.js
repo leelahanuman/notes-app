@@ -229,26 +229,19 @@ const favoriteNote = async (req, res) => {
 const setReminder = async (req, res) => {
   try {
     const note = await Note.findById(req.params.id);
+    if (!note) return res.status(404).json({ message: "Note not found" });
 
-    if (!note) {
-      return res.status(404).json({
-        message: "Note not found",
-      });
+    //  Ensure only the owner can set a reminder
+    if (note.user.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: "Not authorized" });
     }
 
     note.reminderAt = req.body.reminderAt;
-    note.reminderSent = false;
-
+    note.reminderSent = false;   // reset so it fires again if date is changed
     await note.save();
-
-    res.status(200).json({
-      success: true,
-      data: note,
-    });
+    res.status(200).json({ success: true, data: note });
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    res.status(500).json({ message: error.message });
   }
 };
 // @desc    Pin/Unpin note
