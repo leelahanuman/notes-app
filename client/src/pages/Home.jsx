@@ -29,6 +29,8 @@ const Home = () => {
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editNote, setEditNote] = useState(null);
+  const [reminderModal, setReminderModal] = useState(null); // holds the note
+const [reminderInput, setReminderInput] = useState("");
   const [reminderDate, setReminderDate] = useState("");
   const [formData, setFormData] = useState({
     title: "",
@@ -52,16 +54,16 @@ useEffect(() => {
     notes.forEach((note) => {
       if (
         note.reminderAt &&
-        !note.reminderShown &&
+        !note.reminderSent &&    // correct field from schema
         new Date(note.reminderAt) <= new Date()
       ) {
-        alert(`Reminder: ${note.title}`);
+        alert(`⏰ Reminder: ${note.title}`);
       }
     });
   }, 60000);
-
   return () => clearInterval(interval);
 }, [notes]);
+
   const fetchNotes = async () => {
     try {
       setLoading(true);
@@ -131,14 +133,14 @@ useEffect(() => {
     }
   };
 
-  const handleReminder = async (note) => {
-  const date = prompt("Enter reminder date/time");
-
-  if (!date) return;
-
-  await setReminder(note._id, date);
-
-  fetchNotes();
+const handleReminder = async (noteId, isoDate) => {
+  if (!isoDate) return;
+  try {
+    await setReminder(noteId, isoDate);
+    fetchNotes();
+  } catch (error) {
+    setError("Failed to set reminder!");
+  }
 };
 
 const handleFavorite = async (id) => {
@@ -584,12 +586,53 @@ const handleFavorite = async (id) => {
                 onDelete={handleDelete}
                 onPin={handlePin}
                 onFavorite={handleFavorite}
-                onReminder={handleReminder}
+                onReminder={(note) => {
+  setReminderModal(note);
+  setReminderInput(note.reminderAt
+    ? new Date(note.reminderAt).toISOString().slice(0, 16)
+    : "");
+}}
               />
             ))}
           </div>
         )}
       </div>
+      {reminderModal && (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl w-80">
+      <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-1">
+        Set Reminder
+      </h3>
+      <p className="text-sm text-gray-500 mb-4">"{reminderModal.title}"</p>
+      <input
+        type="datetime-local"
+        value={reminderInput}
+        onChange={(e) => setReminderInput(e.target.value)}
+        min={new Date().toISOString().slice(0, 16)}
+        className="w-full border rounded-xl px-3 py-2 mb-4
+          dark:bg-gray-700 dark:border-gray-600 dark:text-white
+          focus:ring-2 focus:ring-blue-500"
+      />
+      <div className="flex gap-3">
+        <button
+          onClick={async () => {
+            await handleReminder(reminderModal._id, reminderInput);
+            setReminderModal(null);
+          }}
+          className="flex-1 bg-blue-500 text-white py-2 rounded-xl hover:bg-blue-600"
+        >
+          Save
+        </button>
+        <button
+          onClick={() => setReminderModal(null)}
+          className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-xl hover:bg-gray-300"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };
